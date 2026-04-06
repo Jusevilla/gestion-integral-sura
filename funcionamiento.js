@@ -79,6 +79,8 @@ function initLogin() {
  * Inicia la aplicación post-autenticación.
  */
 function startApp() {
+ // Guardar sesión en sessionStorage para persistir al recargar
+  sessionStorage.setItem('session', JSON.stringify(SESSION));
   // Ocultar login, mostrar app
   document.getElementById('screen-login').style.display = 'none';
   const app = document.getElementById('screen-app');
@@ -115,6 +117,8 @@ function startApp() {
  */
 function logout() {
   SESSION = null;
+ // Limpiar sesión guardada al cerrar sesión manualmente
+  sessionStorage.removeItem('session');
   document.getElementById('screen-app').classList.remove('active');
   document.getElementById('screen-login').style.display = 'flex';
   document.getElementById('btn-login').disabled = false;
@@ -884,10 +888,36 @@ window.addEventListener('resize', () => {
    INIT – Bootstrap de la aplicación
 ============================================================ */
 document.addEventListener('DOMContentLoaded', () => {
+
+  // ============================================================
+  // RECUPERAR SESIÓN AL RECARGAR
+  // Si el usuario recarga la página se restaura la sesión
+  // automáticamente sin necesidad de hacer login de nuevo
+  // ============================================================
+  const sesionGuardada = sessionStorage.getItem('session');
+  if (sesionGuardada) {
+    try {
+      SESSION = JSON.parse(sesionGuardada);
+      // Verificar que el usuario sigue siendo válido
+      const usuarioValido = USERS.find(u => u.id === SESSION.id);
+      if (usuarioValido) {
+        startApp(); // Restaurar la app sin pasar por login
+      } else {
+        // Si el usuario no existe limpiar sesión
+        sessionStorage.removeItem('session');
+        SESSION = null;
+      }
+    } catch (e) {
+      // Si hay error en el JSON limpiar sesión
+      sessionStorage.removeItem('session');
+      SESSION = null;
+    }
+  }
+
   // Inicializar módulos
   initLogin();
   initNav();
- 
+
   // Inicializar áreas de upload para cada formulario
   initUploadArea('upload-leg',  'file-leg',  'files-leg');
   initUploadArea('upload-abo',  'file-abo',  'files-abo');
