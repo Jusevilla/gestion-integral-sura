@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Plataforma web de Solicitudes Gestión Integral - Seguros SURA. Proyecto de grado - Politécnico Internacional." />
+  <title>Solicitudes Gestión Integral | SURA</title>
+ 
+  <!-- Google Fonts: Sora (display) + Noto Sans (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Noto+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+   <!-- ============================================================
+       PWA – Progressive Web App
+  ============================================================ -->
+  <!-- Manifiesto: define nombre, íconos y modo de instalación -->
+  <link rel="manifest" href="manifest.js" />
+  <!-- Color de la barra de estado en móviles -->
+  <meta name="theme-color" content="#003da5" />
+  <!-- Soporte iOS (Safari) -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Gestión SURA" />
+  <!-- Ícono para iOS -->
+  <link rel="apple-touch-icon" href="icons/icon-192x192.png" />
+ 
+  <!-- Hoja de estilos externa -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+ 
+<body>
+ 
+<!-- ============================================================
+     PANTALLA DE LOGIN
+============================================================ -->
+<div id="screen-login">
+  <div class="login-card" role="main">
+    <!-- Logo -->
+    <div class="login-logo">
+      <div class="login-logo-mark" aria-hidden="true">
+        <!-- Ícono SURA simplificado en SVG -->
+        <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 14C4 8.477 8.477 4 14 4s10 4.477 10 10-4.477 10-10 10S4 19.523 4 14z" fill="rgba(255,255,255,0.15)"/>
+          <path d="M8 14c0-3.314 2.686-6 6-6s6 2.686 6 6-2.686 6-6 6-6-2.686-6-6z" fill="rgba(255,255,255,0.25)"/>
+          <path d="M11 14c0-1.657 1.343-3 3-3s3 1.343 3 3-1.343 3-3 3-3-1.343-3-3z" fill="#fff"/>
+          <path d="M6 19l3-3M22 9l-3 3" stroke="#F5D800" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="login-logo-text">
+        <h1>Seguros SURA</h1>
+        <p>Gestión Integral · Plataforma Web</p>
+      </div>
+    </div>
+ 
+    <h2 class="login-title">Bienvenido</h2>
+    <p class="login-subtitle">Ingresa tus credenciales corporativas para continuar.</p>
+ 
+    <!-- Aviso de credenciales demo -->
+    <div class="demo-hint" role="note">
+      <strong>Usuarios demo:</strong><br/>
+      Asesor → <strong>asesor01 / pass123</strong><br/>
+      Admin → <strong>admin / admin123</strong>
+    </div>
+ 
+    <!-- Formulario de login -->
+    <form id="form-login" novalidate aria-label="Formulario de acceso">
+      <div class="flex-col gap-4">
+        <div class="form-group">
+          <label class="form-label" for="login-user">Usuario corporativo</label>
+          <input
+            id="login-user"
+            class="form-control"
+            type="text"
+            placeholder="usuario@sura.com"
+            autocomplete="username"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="login-pass">Contraseña</label>
+          <input
+            id="login-pass"
+            class="form-control"
+            type="password"
+            placeholder="••••••••"
+            autocomplete="current-password"
+            required
+          />
+        </div>
+        <div id="login-error" class="alert alert-error hidden" role="alert"></div>
+        <button type="submit" class="btn btn-primary btn-lg btn-full" id="btn-login">
+          Ingresar al sistema
+        </button>
+      </div>
+    </form>
+ 
+    <p style="font-size:0.73rem;color:var(--text-light);text-align:center;margin-top:20px;">
+      Proyecto académico – Politécnico Internacional · 2026<br/>
+      Datos simulados – Uso exclusivo demostrativo
+    </p>
+  </div>
+</div>
+ 
+<!-- ============================================================
+     PANTALLA PRINCIPAL (SPA)
+============================================================ -->
+<div id="screen-app" role="application" aria-label="Plataforma Gestión Integral">
+ 
+  <!-- Header fijo -->
+  <header class="app-header" role="banner">
+    <button class="btn-hamburger" id="btn-sidebar-toggle" aria-label="Abrir menú" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="header-brand">
+      <div class="header-brand-logo" aria-hidden="true">
+        <svg viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="11" cy="11" r="10" fill="rgba(255,255,255,0.15)"/>
+          <circle cx="11" cy="11" r="5" fill="rgba(255,255,255,0.30)"/>
+          <circle cx="11" cy="11" r="2.5" fill="#fff"/>
+        </svg>
+      </div>
+      <div>
+        <span class="header-brand-name">SURA</span>
+        <span class="header-brand-sub">Gestión Integral</span>
+      </div>
+    </div>
+    <div class="header-spacer"></div>
+    <div class="header-user">
+      <div class="header-user-info">
+        <span class="header-user-name" id="hdr-user-name">—</span>
+        <span class="header-user-role" id="hdr-user-role">—</span>
+      </div>
+      <div class="header-avatar" id="hdr-avatar" aria-hidden="true">—</div>
+      <button class="btn btn-sm btn-ghost" id="btn-logout" title="Cerrar sesión" aria-label="Cerrar sesión">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        <span style="display:none">Salir</span>
+      </button>
+    </div>
+  </header>
+ 
+  <!-- Overlay sidebar (móvil) -->
+  <div class="sidebar-overlay" id="sidebar-overlay" aria-hidden="true"></div>
+ 
+  <!-- Sidebar de navegación -->
+  <nav class="app-sidebar collapsed" id="app-sidebar" aria-label="Navegación principal">
+    <div class="sidebar-section-title">Principal</div>
+ 
+    <div class="nav-item active" data-view="dashboard" role="button" tabindex="0" aria-label="Inicio - Dashboard">
+      <svg class="nav-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Inicio
+    </div>
+ 
+    <div class="sidebar-section-title">Solicitudes</div>
+ 
+    <div class="nav-item" data-view="legalizacion" role="button" tabindex="0" aria-label="Legalización de Transferencias">
+      <svg class="nav-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      Legalización Transf.
+    </div>
+ 
+    <div class="nav-item" data-view="abonos" role="button" tabindex="0" aria-label="Abonos y Cruces">
+      <svg class="nav-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>
+      Abonos y Cruces
+    </div>
+ 
+    <div class="nav-item" data-view="certificados" role="button" tabindex="0" aria-label="Certificaciones Onerosas">
+      <svg class="nav-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><circle cx="12" cy="15" r="2"/><path d="M9.5 12.5l1 1"/></svg>
+      Certificados Onerosos
+    </div>
+ 
+    <div class="nav-item" data-view="estadocuenta" role="button" tabindex="0" aria-label="Estado de Cuenta">
+      <svg class="nav-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+      Estado de Cuenta
+    </div>
+ 
+    <div class="nav-item" data-view="dolares" role="button" tabindex="0" aria-label="Pagos en Dólares">
+      <svg class="nav-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      Pagos en Dólares
+    </div>
+ 
+    <div class="nav-item" data-view="devoluciones" role="button" tabindex="0" aria-label="Gestión de Devoluciones">
+      <svg class="nav-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg>
+      Gestión Devoluciones
+      <span class="nav-badge" id="nb-devoluciones">2</span>
+    </div>
+ 
+    <div class="sidebar-section-title">Consultas</div>
+ 
+    <div class="nav-item" data-view="estado-solicitud" role="button" tabindex="0" aria-label="Estado de Solicitudes">
+      <svg class="nav-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Estado Solicitudes
+    </div>
+ 
+    <!-- Solo visible para admin -->
+    <div class="nav-item nav-admin hidden" data-view="admin" role="button" tabindex="0" aria-label="Panel Administrador">
+      <svg class="nav-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Panel Admin
+    </div>
+ 
+    <div class="sidebar-section-title">Cuenta</div>
+    <div class="nav-item" data-view="perfil" role="button" tabindex="0" aria-label="Mi perfil">
+      <svg class="nav-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Mi Perfil
+    </div>
+ 
+    <div class="sidebar-footer">
+      <p class="sidebar-version">v1.0.0 · Proyecto de grado 2026</p>
+    </div>
+  </nav>
+ 
+  <!-- Contenido principal -->
+  <main class="app-content" id="app-content" role="main">
+ 
+    <!-- ===================== VISTA: DASHBOARD ===================== -->
+    <section class="view active" id="view-dashboard" aria-labelledby="dash-title">
+      <div class="page-header">
+        <div class="page-breadcrumb">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Inicio
+        </div>
+        <h1 class="page-title" id="dash-title">Dashboard</h1>
+        <p class="page-subtitle">Resumen de actividad y accesos rápidos a los procesos.</p>
+      </div>
+ 
+      <!-- Bienvenida -->
+      <div class="dash-welcome" aria-label="Panel de bienvenida">
+        <p class="dash-welcome-greeting">¡Hola de nuevo! 👋</p>
+        <p class="dash-welcome-name" id="dash-name">Asesor</p>
+        <p class="dash-welcome-info" id="dash-info">Gerencia de Inversiones y Tesorería · Seguros SURA</p>
+      </div>
+ 
+      <!-- Estadísticas -->
+      <div class="dash-stats">
+        <div class="stat-card">
+          <div class="stat-icon" style="background:rgba(0,61,165,0.08);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--sura-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <span class="stat-label">Total radicados</span>
+          <span class="stat-value" id="stat-total">0</span>
+          <span class="stat-meta">Todas las solicitudes</span>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:rgba(22,163,74,0.10);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span class="stat-label">Gestionados</span>
+          <span class="stat-value" id="stat-gestion" style="color:var(--success)">0</span>
+          <span class="stat-meta">Completados exitosamente</span>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:rgba(245,216,0,0.15);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--warning)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <span class="stat-label">En gestión</span>
+          <span class="stat-value" id="stat-proceso" style="color:var(--warning)">0</span>
+          <span class="stat-meta">En proceso de trámite</span>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:rgba(220,38,38,0.08);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--error)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+          </div>
+          <span class="stat-label">Rechazados</span>
+          <span class="stat-value" id="stat-rechazado" style="color:var(--error)">0</span>
+          <span class="stat-meta">Requieren revisión</span>
+        </div>
+      </div>
+ 
+      <!-- Acciones rápidas -->
+      <div class="quick-actions">
+        <p class="quick-actions-title">Accesos rápidos</p>
+        <div class="qa-grid">
+          <div class="qa-item" data-goto="legalizacion" role="button" tabindex="0" aria-label="Nueva legalización de transferencia">
+            <div class="qa-icon" style="background:rgba(0,61,165,0.10);">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--sura-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            </div>
+            <span class="qa-name">Legalización Transferencias</span>
+            <span class="qa-time">2 días hábiles</span>
+          </div>
+          <div class="qa-item" data-goto="abonos" role="button" tabindex="0" aria-label="Nueva solicitud abonos y cruces">
+            <div class="qa-icon" style="background:rgba(0,180,216,0.10);">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>
+            </div>
+            <span class="qa-name">Abonos y Cruces</span>
+            <span class="qa-time">2 días hábiles</span>
+          </div>
+          <div class="qa-item" data-goto="certificados" role="button" tabindex="0" aria-label="Nueva certificación onerosa">
+            <div class="qa-icon" style="background:rgba(22,163,74,0.10);">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <span class="qa-name">Certificados Onerosos</span>
+            <span class="qa-time">1 día hábil</span>
+          </div>
+          <div class="qa-item" data-goto="estadocuenta" role="button" tabindex="0" aria-label="Solicitar estado de cuenta">
+            <div class="qa-icon" style="background:rgba(245,216,0,0.15);">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--sura-yellow-dk)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+            </div>
+            <span class="qa-name">Estado de Cuenta</span>
+            <span class="qa-time">2 días hábiles</span>
+          </div>
+          <div class="qa-item" data-goto="dolares" role="button" tabindex="0" aria-label="Legalización pagos en dólares">
+            <div class="qa-icon" style="background:rgba(220,38,38,0.08);">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--error)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </div>
+            <span class="qa-name">Pagos en Dólares</span>
+            <span class="qa-time">2 días hábiles</span>
+          </div>
+          <div class="qa-item" data-goto="devoluciones" role="button" tabindex="0" aria-label="Gestionar devoluciones">
+            <div class="qa-icon" style="background:rgba(0,61,165,0.08);">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--sura-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg>
+            </div>
+            <span class="qa-name">Gestión Devoluciones</span>
+            <span class="qa-time">3–5 días hábiles</span>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- Últimas solicitudes -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Últimas solicitudes</h2>
+          <button class="btn btn-sm btn-secondary" data-goto="estado-solicitud">Ver todas</button>
+        </div>
+        <div class="card-body" style="padding:0;">
+          <div class="table-wrapper">
+            <table id="dash-table" aria-label="Últimas solicitudes radicadas">
+              <thead>
+                <tr>
+                  <th>Radicado</th>
+                  <th>Tipo</th>
+                  <th>Cliente</th>
+                  <th>Estado</th>
+                  <th>Fecha</th>
+                </tr>
+              </thead>
+              <tbody id="dash-table-body">
+                <tr><td colspan="5" class="text-center" style="color:var(--text-light);padding:24px;">Sin solicitudes registradas</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+ 
+    <!-- ===================== VISTA: LEGALIZACIÓN TRANSFERENCIAS ===================== -->
+    <section class="view" id="view-legalizacion" aria-labelledby="leg-title">
+      <div class="page-header">
+        <div class="page-breadcrumb">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Solicitudes / Legalización Transferencias
+        </div>
+        <h1 class="page-title" id="leg-title">Legalización de Transferencias</h1>
+        <p class="page-subtitle">Solicita la legalización de pagos realizados a las cuentas de la compañía. Tiempo de respuesta: <strong>2 días hábiles</strong>.</p>
+      </div>
+      <div class="card request-form">
+        <div class="card-header">
+          <h2 class="card-title">Nueva solicitud</h2>
+          <span class="badge badge-blue">Legalización Transferencias</span>
+        </div>
+        <div class="card-body">
+          <form id="form-legalizacion" novalidate aria-label="Formulario de legalización de transferencia">
+ 
+            <div class="form-section">
+              <div class="form-section-title">Datos del asesor</div>
+              <div class="form-row form-row-2">
+                <div class="form-group">
+                  <label class="form-label" for="leg-cod-asesor">Código de Asesor <span class="required">*</span></label>
+                  <input id="leg-cod-asesor" class="form-control" type="text" placeholder="Ej: ASE-0012" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="leg-correo">Correo electrónico corporativo</label>
+                  <input id="leg-correo" class="form-control" type="email" placeholder="usuario@sura.com" readonly />
+                  <span class="form-hint">Se completa automáticamente con tu sesión.</span>
+                </div>
+              </div>
+            </div>
+ 
+            <div class="form-section">
+              <div class="form-section-title">Datos del cliente</div>
+              <div class="form-row form-row-2">
+                <div class="form-group">
+                  <label class="form-label" for="leg-nombre">Nombre del Cliente <span class="required">*</span></label>
+                  <input id="leg-nombre" class="form-control" type="text" placeholder="Persona natural o jurídica" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="leg-id">Número de Identificación <span class="required">*</span></label>
+                  <input id="leg-id" class="form-control" type="text" placeholder="NIT o cédula" required />
+                </div>
+              </div>
+            </div>
+ 
+            <div class="form-section">
+              <div class="form-section-title">Datos de la póliza</div>
+              <div class="form-row form-row-3">
+                <div class="form-group">
+                  <label class="form-label" for="leg-poliza">Póliza / Contrato PAC <span class="required">*</span></label>
+                  <input id="leg-poliza" class="form-control" type="text" placeholder="12 dígitos" maxlength="12" required />
+                  <span class="form-hint">Ingresa el número completo con los 12 dígitos.</span>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="leg-recibo">Número de Recibo de Cobro <span class="required">*</span></label>
+                  <input id="leg-recibo" class="form-control" type="text" placeholder="N.º documento en cartera" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="leg-fecha">Fecha de Transferencia <span class="required">*</span></label>
+                  <input id="leg-fecha" class="form-control" type="date" required />
+                </div>
+              </div>
+            </div>
+ 
+            <div class="form-section">
+              <div class="form-section-title">Documentos adjuntos</div>
+              <div class="form-group">
+                <label class="form-label">Soporte de Pago <span class="required">*</span></label>
+                <div class="upload-area" id="upload-leg" role="button" tabindex="0" aria-label="Área de carga de archivos">
+                  <input type="file" id="file-leg" accept=".pdf,.jpg,.jpeg,.png,.xlsx,.xls" multiple aria-label="Seleccionar archivos" />
+                  <div class="upload-icon" aria-hidden="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--sura-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  </div>
+                  <p class="upload-text">Haz clic o arrastra tus archivos aquí</p>
+                  <p class="upload-hint">PDF, JPG, PNG, XLSX (máx. 10 MB por archivo)</p>
+                </div>
+                <div class="file-list" id="files-leg" aria-live="polite"></div>
+              </div>
+              <div class="form-group mt-4">
+                <label class="form-label" for="leg-comentarios">Comentarios (opcional)</label>
+                <textarea id="leg-comentarios" class="form-control" rows="3" placeholder="Notas aclaratorias para el proceso de legalización..."></textarea>
+              </div>
+            </div>
+ 
+            <div id="leg-error" class="alert alert-error hidden mt-3" role="alert"></div>
+          </form>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-ghost" type="button" onclick="resetForm('form-legalizacion','files-leg','file-leg')">Limpiar</button>
+          <button class="btn btn-primary btn-lg" type="button" onclick="submitSolicitud('legalizacion')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            Enviar Solicitud
+          </button>
+        </div>
+      </div>
+    </section>
+ 
+    <!-- ===================== VISTA: ABONOS Y CRUCES ===================== -->
+    <section class="view" id="view-abonos" aria-labelledby="abo-title">
+      <div class="page-header">
+        <div class="page-breadcrumb">Solicitudes / Abonos y Cruces</div>
+        <h1 class="page-title" id="abo-title">Abonos y Cruces</h1>
+        <p class="page-subtitle">Solicita abonos o cruces para soluciones abonables según políticas de cartera. Tiempo de respuesta: <strong>2 días hábiles</strong>.</p>
+      </div>
+      <div class="card request-form">
+        <div class="card-header">
+          <h2 class="card-title">Nueva solicitud</h2>
+          <span class="badge badge-teal">Abonos y Cruces</span>
+        </div>
+        <div class="card-body">
+          <form id="form-abonos" novalidate aria-label="Formulario de abonos y cruces">
+            <div class="form-section">
+              <div class="form-section-title">Asesor</div>
+              <div class="form-row form-row-2">
+                <div class="form-group">
+                  <label class="form-label" for="abo-cod-asesor">Código de Asesor <span class="required">*</span></label>
+                  <input id="abo-cod-asesor" class="form-control" type="text" placeholder="Ej: ASE-0012" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="abo-correo">Correo electrónico</label>
+                  <input id="abo-correo" class="form-control" type="email" readonly />
+                </div>
+              </div>
+            </div>
+            <div class="form-section">
+              <div class="form-section-title">Datos del cliente</div>
+              <div class="form-row form-row-2">
+                <div class="form-group">
+                  <label class="form-label" for="abo-nombre">Nombre del Cliente <span class="required">*</span></label>
+                  <input id="abo-nombre" class="form-control" type="text" placeholder="Persona natural o jurídica" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="abo-id">Número de Identificación <span class="required">*</span></label>
+                  <input id="abo-id" class="form-control" type="text" placeholder="NIT o cédula" required />
+                </div>
+              </div>
+            </div>
+            <div class="form-section">
+              <div class="form-section-title">Datos de cobro</div>
+              <div class="form-row form-row-2">
+                <div class="form-group">
+                  <label class="form-label" for="abo-poliza">Póliza / Contrato PAC <span class="required">*</span></label>
+                  <input id="abo-poliza" class="form-control" type="text" placeholder="12 dígitos" maxlength="12" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="abo-recibo">Número de Recibo de Cobro <span class="required">*</span></label>
+                  <input id="abo-recibo" class="form-control" type="text" required />
+                </div>
+              </div>
+              <div class="form-row form-row-2 mt-3">
+                <div class="form-group">
+                  <label class="form-label" for="abo-poliza-dev">Póliza Devolución (12 dígitos) <span class="required">*</span></label>
+                  <input id="abo-poliza-dev" class="form-control" type="text" placeholder="12 dígitos" maxlength="12" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="abo-recibo-dev">Número de Recibo Devolución <span class="required">*</span></label>
+                  <input id="abo-recibo-dev" class="form-control" type="text" required />
+                </div>
+              </div>
+            </div>
+            <div class="form-section">
+              <div class="form-section-title">Adjuntos</div>
+              <div class="alert alert-warning mb-4" role="note">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                Para abonos: adjuntar <strong>autorización del equipo comercial</strong> (director o analista). Para múltiples solicitudes: adjuntar archivo Excel diligenciado.
+              </div>
+              <div class="upload-area" id="upload-abo">
+                <input type="file" id="file-abo" accept=".pdf,.jpg,.jpeg,.png,.xlsx,.xls" multiple />
+                <div class="upload-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--sura-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+                <p class="upload-text">Haz clic o arrastra tus archivos aquí</p>
+                <p class="upload-hint">PDF, JPG, PNG, XLSX</p>
+              </div>
+              <div class="file-list" id="files-abo"></div>
+              <div class="form-group mt-4">
+                <label class="form-label" for="abo-comentarios">Comentarios (opcional)</label>
+                <textarea id="abo-comentarios" class="form-control" rows="3" placeholder="Notas aclaratorias..."></textarea>
+              </div>
+            </div>
+            <div id="abo-error" class="alert alert-error hidden mt-3" role="alert"></div>
+          </form>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-ghost" onclick="resetForm('form-abonos','files-abo','file-abo')">Limpiar</button>
+          <button class="btn btn-primary btn-lg" onclick="submitSolicitud('abonos')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            Enviar Solicitud
+          </button>
+        </div>
+      </div>
+    </section>
+ 
+    <!-- ===================== VISTA: CERTIFICADOS ONEROSOS ===================== -->
+    <section class="view" id="view-certificados" aria-labelledby="cert-title">
+      <div class="page-header">
+        <div class="page-breadcrumb">Solicitudes / Certificados Onerosos</div>
+        <h1 class="page-title" id="cert-title">Certificaciones Onerosas</h1>
+        <p class="page-subtitle">Genera certificados para pólizas de Hogar y Empresariales con beneficiario oneroso. Tiempo de respuesta: <strong>1 día hábil</strong>.</p>
+      </div>
+      <div class="card request-form">
+        <div class="card-header">
+          <h2 class="card-title">Nueva solicitud</h2>
+          <span class="badge badge-green">Certificaciones Onerosas</span>
+        </div>
+        <div class="card-body">
+          <form id="form-certificados" novalidate aria-label="Formulario de certificaciones onerosas">
+            <div class="form-section">
+              <div class="form-section-title">Asesor</div>
+              <div class="form-row form-row-2">
+                <div class="form-group">
+                  <label class="form-label" for="cert-cod-asesor">Código de Asesor <span class="required">*</span></label>
+                  <input id="cert-cod-asesor" class="form-control" type="text" placeholder="Ej: ASE-0012" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="cert-correo">Correo electrónico</label>
+                  <input id="cert-correo" class="form-control" type="email" readonly />
+                </div>
+              </div>
+            </div>
+            <div class="form-section">
+              <div class="form-section-title">Datos del cliente</div>
+              <div class="form-row form-row-2">
+                <div class="form-group">
+                  <label class="form-label" for="cert-nombre">Nombre del Cliente <span class="required">*</span></label>
+                  <input id="cert-nombre" class="form-control" type="text" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="cert-id">Número de Identificación <span class="required">*</span></label>
+                  <input id="cert-id" class="form-control" type="text" required />
+                </div>
+              </div>
+            </div>
+            <div class="form-section">
+              <div class="form-section-title">Datos de la póliza</div>
+              <div class="form-row form-row-2">
+                <div class="form-group">
+                  <label class="form-label" for="cert-poliza">Póliza / Contrato PAC <span class="required">*</span></label>
+                  <input id="cert-poliza" class="form-control" type="text" placeholder="12 dígitos" maxlength="12" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="cert-solucion">Solución <span class="required">*</span></label>
+                  <select id="cert-solucion" class="form-control" required>
+                    <option value="">Seleccionar solución</option>
+                    <option value="Hogar">Hogar</option>
+                    <option value="Empresarial">Empresarial</option>
+                    <option value="Casos Especiales">Casos Especiales</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-row form-row-2 mt-3">
+                <div class="form-group">
+                  <label class="form-label" for="cert-fecha-ini">Fecha de Inicio de Vigencia <span class="required">*</span></label>
+                  <input id="cert-fecha-ini" class="form-control" type="date" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="cert-fecha-fin">Fecha de Fin de Vigencia <span class="required">*</span></label>
+                  <input id="cert-fecha-fin" class="form-control" type="date" required />
+                </div>
+              </div>
+              <div class="form-group mt-3">
+                <label class="form-label" for="cert-beneficiario">Beneficiario Oneroso <span class="required">*</span></label>
+                <input id="cert-beneficiario" class="form-control" type="text" placeholder="Entidad financiera onerosa" required />
+              </div>
+            </div>
+            <div class="form-section">
+              <div class="form-section-title">Adjuntos</div>
+              <div class="alert alert-info mb-4" role="note">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                Para pólizas <strong>Empresariales</strong>: adjuntar carátula de la póliza. Para <strong>Casos Especiales</strong>: adjuntar soportes indicados por el auxiliar front.
+              </div>
+              <div class="upload-area" id="upload-cert">
+                <input type="file" id="file-cert" accept=".pdf,.jpg,.jpeg,.png" multiple />
+                <div class="upload-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--sura-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+                <p class="upload-text">Haz clic o arrastra tus archivos</p>
+                <p class="upload-hint">PDF, JPG, PNG</p>
+              </div>
+              <div class="file-list" id="files-cert"></div>
+              <div class="form-group mt-4">
+                <label class="form-label" for="cert-comentarios">Comentarios (opcional)</label>
+                <textarea id="cert-comentarios" class="form-control" rows="3" placeholder="Notas aclaratorias..."></textarea>
+              </div>
+            </div>
+            <div id="cert-error" class="alert alert-error hidden mt-3" role="alert"></div>
+          </form>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-ghost" onclick="resetForm('form-certificados','files-cert','file-cert')">Limpiar</button>
+          <button class="btn btn-primary btn-lg" onclick="submitSolicitud('certificados')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            Enviar Solicitud
+          </button>
+        </div>
+      </div>
+    </section>
+ 
+    <!-- ===================== VISTA: ESTADO DE CUENTA ===================== -->
+    <section class="view" id="view-estadocuenta" aria-labelledby="ec-title">
+      <div class="page-header">
+        <div class="page-breadcrumb">Solicitudes / Estado de Cuenta</div>
+        <h1 class="page-title" id="ec-title">Estado de Cuenta y Movimientos de Pago</h1>
+        <p class="page-subtitle">Genera estados de cuenta para pólizas de pago mensual <strong>no financiadas</strong> (rango: 6 a 24 meses). Tiempo de respuesta: <strong>2 días hábiles</strong>.</p>
+      </div>
+      <div class="alert alert-warning mb-4" role="note">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Para pólizas <strong>financiadas</strong>: genera el estado directamente desde AVA / Asistente de Servicios Financieros / Operaciones de financiación.
+      </div>
+      <div class="card request-form">
+        <div class="card-header">
+          <h2 class="card-title">Nueva solicitud</h2>
+          <span class="badge badge-yellow">Estado de Cuenta</span>
+        </div>
+        <div class="card-body">
+          <form id="form-estadocuenta" novalidate aria-label="Formulario estado de cuenta">
+            <div class="form-section">
+              <div class="form-section-title">Asesor</div>
+              <div class="form-row form-row-2">
+                <div class="form-group">
+                  <label class="form-label" for="ec-cod-asesor">Código de Asesor <span class="required">*</span></label>
+                  <input id="ec-cod-asesor" class="form-control" type="text" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="ec-correo">Correo electrónico</label>
+                  <input id="ec-correo" class="form-control" type="email" readonly />
+                </div>
+              </div>
+            </div>
+            <div class="form-section">
+              <div class="form-section-title">Datos del cliente</div>
+              <div class="form-row form-row-2">
+                <div class="form-group">
+                  <label class="form-label" for="ec-nombre">Nombre del Cliente <span class="required">*</span></label>
+                  <input id="ec-nombre" class="form-control" type="text" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="ec-id">Número de Identificación <span class="required">*</span></label>
+                  <input id="ec-id" class="form-control" type="text" required />
+                </div>
+              </div>
+            </div>
+            <div class="form-section">
+              <div class="form-section-title">Datos de la póliza y rango de fechas</div>
+              <div class="form-row form-row-3">
+                <div class="form-group">
+                  <label class="form-label" for="ec-poliza">Póliza / Contrato PAC <span class="required">*</span></label>
+                  <input id="ec-poliza" class="form-control" type="text" placeholder="12 dígitos" maxlength="12" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="ec-fecha-ini">Fecha Inicio <span class="required">*</span></label>
+                  <input id="ec-fecha-ini" class="form-control" type="date" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="ec-fecha-fin">Fecha Fin <span class="required">*</span></label>
+                  <input id="ec-fecha-fin" class="form-control" type="date" required />
+                </div>
+              </div>
+              <div class="form-group mt-4">
+                <label class="form-label" for="ec-comentarios">Comentarios (opcional)</label>
+                <textarea id="ec-comentarios" class="form-control" rows="3" placeholder="Notas aclaratorias..."></textarea>
+              </div>
+            </div>
+            <div id="ec-error" class="alert alert-error hidden mt-3" role="alert"></div>
+          </form>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-ghost" onclick="resetForm('form-estadocuenta',null,null)">Limpiar</button>
+          <button class="btn btn-primary btn-lg" onclick="submitSolicitud('estadocuenta')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            Enviar Solicitud
+          </button>
+        </div>
+      </div>
+    </section>
+ 
+    <!-- ===================== VISTA: PAGOS EN DÓLARES ===================== -->
+    <section class="view" id="view-dolares" aria-labelledby="dol-title">
+      <div class="page-header">
+        <div class="page-breadcrumb">Solicitudes / Pagos en Dólares</div>
+        <h1 class="page-title" id="dol-title">Legalización Pagos en Dólares</h1>
+        <p class="page-subtitle">Aplica pagos de pólizas emitidas en dólares (COP o USD). Tiempo de respuesta: <strong>2 días hábiles</strong>.</p>
+      </div>
+      <div class="alert alert-info mb-4" role="note">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <div><strong>Política TRM:</strong> El IVA se legaliza con la TRM de la <strong>fecha de expedición</strong> y la prima con la TRM del <strong>día del pago</strong>. Si no cumple esta política, la solicitud será devuelta.</div>
+      </div>
+      <div class="card request-form">
+        <div class="card-header">
+          <h2 class="card-title">Nueva solicitud</h2>
+          <span class="badge badge-red">Pagos en Dólares</span>
+        </div>
+        <div class="card-body">
+          <form id="form-dolares" novalidate aria-label="Formulario legalización pagos en dólares">
+            <div class="form-section">
+              <div class="form-section-title">Asesor</div>
+              <div class="form-row form-row-2">
+                <div class="form-group">
+                  <label class="form-label" for="dol-cod-asesor">Código de Asesor <span class="required">*</span></label>
+                  <input id="dol-cod-asesor" class="form-control" type="text" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="dol-correo">Correo electrónico</label>
+                  <input id="dol-correo" class="form-control" type="email" readonly />
+                </div>
+              </div>
+            </div>
+            <div class="form-section">
+              <div class="form-section-title">Datos del cliente</div>
+              <div class="form-row form-row-2">
+                <div class="form-group">
+                  <label class="form-label" for="dol-nombre">Nombre del Cliente <span class="required">*</span></label>
+                  <input id="dol-nombre" class="form-control" type="text" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="dol-id">Número de Identificación <span class="required">*</span></label>
+                  <input id="dol-id" class="form-control" type="text" required />
+                </div>
+              </div>
+            </div>
+            <div class="form-section">
+              <div class="form-section-title">Datos de la póliza</div>
+              <div class="form-row form-row-2">
+                <div class="form-group">
+                  <label class="form-label" for="dol-poliza">Póliza / Contrato PAC <span class="required">*</span></label>
+                  <input id="dol-poliza" class="form-control" type="text" placeholder="12 dígitos" maxlength="12" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="dol-fecha">Fecha de Transferencia <span class="required">*</span></label>
+                  <input id="dol-fecha" class="form-control" type="date" required />
+                </div>
+              </div>
+              <div class="form-group mt-3">
+                <label class="form-label" for="dol-moneda">Moneda del pago <span class="required">*</span></label>
+                <select id="dol-moneda" class="form-control" required>
+                  <option value="">Seleccionar</option>
+                  <option value="COP">COP (Pesos Colombianos)</option>
+                  <option value="USD">USD (Dólares)</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-section">
+              <div class="form-section-title">Documentos adjuntos</div>
+              <div class="upload-area" id="upload-dol">
+                <input type="file" id="file-dol" accept=".pdf,.jpg,.jpeg,.png,.xlsx,.xls" multiple />
+                <div class="upload-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--sura-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+                <p class="upload-text">Haz clic o arrastra tus archivos</p>
+                <p class="upload-hint">PDF, JPG, PNG, XLSX (obligatorio: soporte de pago)</p>
+              </div>
+              <div class="file-list" id="files-dol"></div>
+              <div class="form-group mt-4">
+                <label class="form-label" for="dol-comentarios">Comentarios (opcional)</label>
+                <textarea id="dol-comentarios" class="form-control" rows="3" placeholder="Notas aclaratorias..."></textarea>
+              </div>
+            </div>
+            <div id="dol-error" class="alert alert-error hidden mt-3" role="alert"></div>
+          </form>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-ghost" onclick="resetForm('form-dolares','files-dol','file-dol')">Limpiar</button>
+          <button class="btn btn-primary btn-lg" onclick="submitSolicitud('dolares')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            Enviar Solicitud
+          </button>
+        </div>
+      </div>
+    </section>
+ 
+    <!-- ===================== VISTA: GESTIÓN DE DEVOLUCIONES ===================== -->
+    <section class="view" id="view-devoluciones" aria-labelledby="dev-title">
+      <div class="page-header">
+        <div class="page-breadcrumb">Solicitudes / Gestión de Devoluciones</div>
+        <h1 class="page-title" id="dev-title">Gestión de Devoluciones</h1>
+        <p class="page-subtitle">Visualiza los saldos a favor disponibles para giro y radica la solicitud de devolución. Tiempo de respuesta: <strong>3 a 5 días hábiles</strong>.</p>
+      </div>
+      <div class="card" style="margin-bottom:20px;">
+        <div class="card-header">
+          <h2 class="card-title">Saldos a favor disponibles</h2>
+          <div class="flex gap-2">
+            <input id="dev-filter" class="form-control" style="width:180px;padding:7px 12px;font-size:0.83rem;" type="text" placeholder="Buscar por ID cliente..." aria-label="Filtrar saldos por identificación" />
+            <button class="btn btn-secondary btn-sm" onclick="filtrarDevoluciones()">Filtrar</button>
+            <button class="btn btn-ghost btn-sm" onclick="filtrarDevoluciones(true)" title="Actualizar">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="card-body" style="padding:0;">
+          <div class="dev-table-wrapper">
+            <table id="dev-table" aria-label="Saldos a favor disponibles para devolución">
+              <thead>
+                <tr>
+                  <th>Cliente</th>
+                  <th>Identificación</th>
+                  <th>Póliza</th>
+                  <th>Recibo</th>
+                  <th>Saldo</th>
+                  <th>Acción</th>
+                </tr>
+              </thead>
+              <tbody id="dev-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- Formulario inline de devolución (se activa al clic) -->
+      <div class="card hidden" id="dev-form-card" aria-label="Formulario de solicitud de devolución">
+        <div class="card-header">
+          <h2 class="card-title">Datos para giro de devolución</h2>
+          <button class="btn btn-ghost btn-sm" onclick="cancelarDevolucion()">Cancelar</button>
+        </div>
+        <div class="card-body">
+          <div class="alert alert-info mb-4" role="note">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Solo se puede radicar <strong>una solicitud de devolución a la vez</strong>. Completa todos los campos para habilitar el envío.
+          </div>
+          <div id="dev-resumen" style="background:var(--bg-main);border-radius:var(--radius-md);padding:14px 18px;margin-bottom:18px;font-size:0.85rem;color:var(--text-secondary);"></div>
+          <form id="form-devolucion" novalidate aria-label="Formulario datos bancarios para devolución">
+            <div class="form-row form-row-2">
+              <div class="form-group">
+                <label class="form-label" for="dev-tipo-id">Tipo de Identificación <span class="required">*</span></label>
+                <select id="dev-tipo-id" class="form-control" required>
+                  <option value="">Seleccionar</option>
+                  <option value="CC">Cédula de Ciudadanía</option>
+                  <option value="NIT">NIT</option>
+                  <option value="CE">Cédula de Extranjería</option>
+                  <option value="PA">Pasaporte</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="dev-entidad">Entidad Bancaria <span class="required">*</span></label>
+                <select id="dev-entidad" class="form-control" required>
+                  <option value="">Seleccionar entidad</option>
+                  <option>Bancolombia</option>
+                  <option>Banco de Bogotá</option>
+                  <option>Davivienda</option>
+                  <option>BBVA</option>
+                  <option>Banco Popular</option>
+                  <option>Nequi</option>
+                  <option>Daviplata</option>
+                  <option>Otro</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="dev-tipo-cuenta">Tipo de Cuenta <span class="required">*</span></label>
+                <select id="dev-tipo-cuenta" class="form-control" required>
+                  <option value="">Seleccionar</option>
+                  <option value="Corriente">Corriente</option>
+                  <option value="Ahorros">Ahorros</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="dev-num-cuenta">Número de Cuenta <span class="required">*</span></label>
+                <input id="dev-num-cuenta" class="form-control" type="text" placeholder="Número de cuenta" required />
+              </div>
+            </div>
+          </form>
+          <div id="dev-error" class="alert alert-error hidden mt-3" role="alert"></div>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-ghost" onclick="cancelarDevolucion()">Cancelar</button>
+          <button class="btn btn-success btn-lg" id="btn-enviar-dev" onclick="submitDevolucion()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            Enviar Solicitud de Devolución
+          </button>
+        </div>
+      </div>
+    </section>
+ 
+    <!-- ===================== VISTA: ESTADO DE SOLICITUDES ===================== -->
+    <section class="view" id="view-estado-solicitud" aria-labelledby="es-title">
+      <div class="page-header">
+        <div class="page-breadcrumb">Consultas / Estado de Solicitudes</div>
+        <h1 class="page-title" id="es-title">Estado de Solicitudes</h1>
+        <p class="page-subtitle">Consulta el estado de todas tus solicitudes radicadas.</p>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Consulta de radicados</h2>
+        </div>
+        <div class="card-body">
+          <!-- Filtros -->
+          <div class="filter-bar">
+            <div class="form-group">
+              <label class="form-label" for="filter-tipo">Tipo de solicitud</label>
+              <select id="filter-tipo" class="form-control" onchange="filtrarSolicitudes()">
+                <option value="">Todos</option>
+                <option value="Legalización Transferencias">Legalización Transferencias</option>
+                <option value="Abonos y Cruces">Abonos y Cruces</option>
+                <option value="Certificados Onerosos">Certificados Onerosos</option>
+                <option value="Estado de Cuenta">Estado de Cuenta</option>
+                <option value="Pagos en Dólares">Pagos en Dólares</option>
+                <option value="Devolución">Gestión Devoluciones</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="filter-estado">Estado</label>
+              <select id="filter-estado" class="form-control" onchange="filtrarSolicitudes()">
+                <option value="">Todos</option>
+                <option value="En gestión">En gestión</option>
+                <option value="Gestionado">Gestionado</option>
+                <option value="Rechazado">Rechazado</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="filter-radicado">N.º radicado</label>
+              <input id="filter-radicado" class="form-control" type="text" placeholder="Buscar radicado..." oninput="filtrarSolicitudes()" />
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="limpiarFiltros()">Limpiar filtros</button>
+          </div>
+ 
+          <div class="table-wrapper">
+            <table id="solicitudes-table" aria-label="Tabla de solicitudes radicadas">
+              <thead>
+                <tr>
+                  <th>Radicado</th>
+                  <th>Tipo</th>
+                  <th>Cliente</th>
+                  <th>ID</th>
+                  <th>Póliza</th>
+                  <th>Estado</th>
+                  <th>Fecha</th>
+                  <th>Comentario</th>
+                </tr>
+              </thead>
+              <tbody id="solicitudes-body">
+                <tr><td colspan="8" class="text-center" style="color:var(--text-light);padding:24px;">Sin solicitudes registradas</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+ 
+    <!-- ===================== VISTA: PANEL ADMIN ===================== -->
+    <section class="view" id="view-admin" aria-labelledby="adm-title">
+      <div class="page-header">
+        <div class="page-breadcrumb">Admin / Panel</div>
+        <h1 class="page-title" id="adm-title">Panel de Administración</h1>
+        <p class="page-subtitle">Gestión de solicitudes y usuarios del sistema (solo administradores).</p>
+      </div>
+      <div class="card" style="margin-bottom:20px;">
+        <div class="card-header">
+          <h2 class="card-title">Todas las solicitudes</h2>
+          <button class="btn btn-sm btn-secondary" onclick="exportarCSV()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Exportar CSV
+          </button>
+        </div>
+        <div class="card-body" style="padding:0;">
+          <div class="table-wrapper">
+            <table id="admin-table" aria-label="Tabla de todas las solicitudes del sistema">
+              <thead>
+                <tr>
+                  <th>Radicado</th>
+                  <th>Tipo</th>
+                  <th>Cliente</th>
+                  <th>Estado</th>
+                  <th>Fecha</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="admin-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+ 
+    <!-- ===================== VISTA: PERFIL ===================== -->
+    <section class="view" id="view-perfil" aria-labelledby="prf-title">
+      <div class="page-header">
+        <div class="page-breadcrumb">Cuenta / Mi Perfil</div>
+        <h1 class="page-title" id="prf-title">Mi Perfil</h1>
+      </div>
+      <div class="profile-header">
+        <div class="profile-avatar" id="prf-avatar">?</div>
+        <div class="profile-info">
+          <h2 id="prf-name">—</h2>
+          <p id="prf-email">—</p>
+          <p id="prf-role">—</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><h2 class="card-title">Información de sesión</h2></div>
+        <div class="card-body">
+          <div class="form-row form-row-2">
+            <div class="form-group">
+              <label class="form-label">Nombre completo</label>
+              <input class="form-control" type="text" id="prf-fullname" readonly />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Correo electrónico</label>
+              <input class="form-control" type="email" id="prf-email-field" readonly />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Código de asesor</label>
+              <input class="form-control" type="text" id="prf-cod" readonly />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Rol en el sistema</label>
+              <input class="form-control" type="text" id="prf-role-field" readonly />
+            </div>
+          </div>
+          <div class="mt-4">
+            <div class="alert alert-info">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              Plataforma académica de demostración. Los datos mostrados son simulados y no representan información real de Seguros SURA.
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-danger" onclick="logout()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Cerrar sesión
+          </button>
+        </div>
+      </div>
+    </section>
+ 
+  </main><!-- /app-content -->
+ 
+</div><!-- /screen-app -->
+ 
+<!-- ============================================================
+     MODAL DE CONFIRMACIÓN (reutilizable)
+============================================================ -->
+<div class="modal-backdrop hidden" id="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal">
+    <div class="modal-icon" id="modal-icon">
+      <!-- Ícono dinámico -->
+    </div>
+    <h2 class="modal-title" id="modal-title">Solicitud radicada</h2>
+    <p class="modal-body" id="modal-body">Tu solicitud fue enviada exitosamente.</p>
+    <div class="modal-radicado" id="modal-radicado">
+      <p class="modal-radicado-label">Número de radicado</p>
+      <p class="modal-radicado-num" id="modal-num">—</p>
+    </div>
+    <p style="font-size:0.78rem;color:var(--text-light);margin-top:4px;">Recibirás un correo de confirmación. Usa este número para hacer seguimiento.</p>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal()">Cerrar</button>
+      <button class="btn btn-primary" onclick="irAEstado()">Ver estado</button>
+    </div>
+  </div>
+</div>
+ 
+<!-- ============================================================
+     TOAST CONTAINER
+============================================================ -->
+<div class="toast-container" id="toast-container" aria-live="polite" aria-atomic="false"></div>
+ 
+ 
+<!-- ============================================================
+ 
+  <!-- Script de funcionamiento externo -->
+  <script src="funcionamiento.js"></script>
+
+  <!-- Registro del Service Worker (PWA) -->
+  <script src="sw-register.js"></script>
+ 
+</body>
+</html>
